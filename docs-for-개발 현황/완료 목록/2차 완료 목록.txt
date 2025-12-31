@@ -1,0 +1,35 @@
+# 2차 FSD 아키텍처 도입 및 인증 인프라 구축 완료 목록
+
+1. FSD (Feature-Sliced Design) 아키텍처 적용
+   - 전체 소스 코드를 `src/` 디렉토리 하위로 이동하여 유지보수성 향상
+   - 레이어별 구조화: `shared`, `entities`, `features`, `widgets`, `app`
+   - `tsconfig.json` 경로 별칭(Path Alias) 설정 완료 (`@/shared`, `@/entities`, `@/features`, `@/widgets`, `@/app`)
+
+2. 인증(Authentication) 시스템 기반 마련
+   - **Axios 기반 API Client**: JWT 인터셉터 및 자동 토큰 갱신(Refresh) 로직 구현 (`src/shared/api/apiClient.ts`)
+   - **글로벌 유저 상태 관리**: Zustand와 SecureStore를 연동하여 앱 재시작 시에도 로그인 유지 구현 (`src/entities/user/model/userStore.ts`)
+   - **인증 훅**: TanStack Query를 연동한 로그인/로그아웃 처리 `useAuth` 커스텀 훅 개발
+   - **로그인 UI**: FSD 원칙을 준수한 `LoginForm` 컴포넌트 구현 및 `(auth)` 그룹 페이지 연동
+
+3. 내비게이션 및 인증 게이트(Auth Gate) 최적화
+   - **세션 초기화**: 앱 부팅 시 토큰 유효성 검사 및 초기화 상태(`isInitialized`) 추적
+   - **자동 리다이렉트**: 비로그인 사용자 자동 로그인 페이지 이동 및 로그인 성공 시 홈 화면 이동 구현
+   - **내비게이션 안정화**: `useRootNavigationState` 및 `<Redirect />`를 사용하여 렌더링 시점 오류 방지
+
+4. UI 정리 및 에셋 재배치
+   - 기본 Expo 템플릿(Welcome Screen) 제거 및 메신저 홈 레이아웃 구조화
+   - 사용자 정보 표시 및 로그아웃 버튼 배치
+   - 모든 이미지 및 아이콘 자산을 `src/shared/assets`로 통합 관리 및 `app.json` 설정 업데이트
+
+5. 인프라 설정 및 안정화
+   - Expo Router의 루트 디렉토리를 `src/app`으로 명시적 설정
+   - 환경 변수(`.env`)를 통한 API 베이스 URL 관리
+   - 전체 프로젝트 모듈 해석(Import Resolution) 오류 전면 수정
+
+관련 핵심 파일:
+- `src/app/_layout.tsx`: 전역 프로바이더 및 세션 초기화 로직
+- `src/app/(tabs)/index.tsx`: 인증 가드 및 로그아웃 기능이 포함된 메인 홈
+- `src/app/(auth)/login.tsx`: 로그인 화면 및 리다이렉트 처리
+- `src/entities/user/model/userStore.ts`: 사용자 상태 및 초기화 로그 관리
+- `src/shared/api/apiClient.ts`: 백엔드 통신 및 인증 관리
+- `app.json`: 앱 전역 설정 및 라우터 설정

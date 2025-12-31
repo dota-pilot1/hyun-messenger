@@ -1,0 +1,14 @@
+# 핵심 프로젝트 시작 가이드
+
+1. 프로젝트 생성 및 실행
+   - 명령어: `npx create-expo-app@latest .` (현재 폴더 기준)
+   - 실행: `npx expo start` (iOS/Android 시뮬레이터 또는 Expo Go 실행)
+
+
+2. 프로젝트 구조 (Expo Router 기준)
+   - `app/`: 라우팅 및 화면 파일 (기존의 screens 역할)
+   - `components/`: 재사용 가능한 UI 컴포넌트
+   - `hooks/`: 커스텀 훅 관리
+   - `constants/`: 공통 상수 및 설정 파일
+
+

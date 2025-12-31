@@ -1,0 +1,20 @@
+1. 프로젝트 생성 (Expo 기준)
+   - npx create-expo-app@latest [프로젝트명]
+   - Expo 특징: 빠른 설정, EAS Build, OTA 업데이트, Prebuild 지원
+
+2. Git 초기화 + GitHub 연결
+   - .gitignore 확인 (Expo 템플릿 기본 포함)
+   - 첫 커밋 → 원격 저장소 연결
+
+3. 실행 환경 확인
+   - Expo Go (빠른 실행) 또는 Development Build (네이티브 코드 수정 시)
+   - npx expo start (iOS/Android 시뮬레이터 또는 실기기 QR)
+
+4. 기본 구조 정리
+   - src/ 생성 (Expo Router 사용 시 app/ 디렉토리 구조 권장)
+   - 폴더 구성: app (or screens) / components / hooks / services
+
+5. 필수 라이브러리 최소 세팅
+   - 네비게이션: expo-router 권장 (기존 방식은 @react-navigation)
+   - 상태관리: Zustand, Jotai, Redux Toolkit 등
+   - 환경변수: .env 지원 내장 (process.env 또는 expo-constants 활용)

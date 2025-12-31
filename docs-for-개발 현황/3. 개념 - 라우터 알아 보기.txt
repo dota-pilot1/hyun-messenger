@@ -1,0 +1,39 @@
+# Expo Router 기본 개념 이해하기
+
+Expo Router는 웹의 Next.js처럼 **파일 시스템 기반의 라우팅**을 제공합니다. `app/` 폴더 안의 파일 구조가 곧 앱의 화면 구조가 됩니다.
+
+## 1. 파일 기반 라우팅 (File-based Routing)
+- `app/index.tsx` → 앱의 첫 화면 (URL: `/`)
+- `app/explore.tsx` → 탐색 화면 (URL: `/explore`)
+- `app/settings/index.tsx` → 설정 화면 (URL: `/settings`)
+
+## 2. 레이아웃 (Layouts: _layout.tsx)
+- 특정 폴더 내의 모든 화면이 공유하는 공통 UI를 정의합니다.
+- 상단 헤더, 하단 탭 바, 배경색 등을 여기서 설정합니다.
+- 현재 프로젝트 구조:
+  - `app/_layout.tsx`: 전체 앱의 Root 레이아웃 (Stack, Modal 등 정의)
+  - `app/(tabs)/_layout.tsx`: 하단 탭 바 전용 레이아웃
+
+## 3. 그룹 (Groups: (tabs))
+- 폴더 이름에 `()`를 붙이면 URL 경로에는 영향을 주지 않고 파일을 그룹화할 수 있습니다.
+- 예: `app/(tabs)/index.tsx`의 실제 주소는 `/index`가 아니라 그냥 `/`입니다. 탭 바 안에 화면들을 묶어둘 때 사용합니다.
+
+## 4. 화면 이동 (Navigation)
+- `expo-router`에서 제공하는 `Link` 컴포넌트나 `router` 객체를 사용합니다.
+- 예시:
+  ```tsx
+  import { Link } from 'expo-router';
+
+  <Link href="/explore">탐색 페이지로 이동</Link>
+  ```
+
+## 5. 동적 라우팅 (Dynamic Routes)
+- 파일명에 `[]`를 사용하면 변하는 값을 주소로 받을 수 있습니다.
+- 예: `app/user/[id].tsx` → `/user/1`, `/user/hyun` 등으로 접근 가능
+
+---
+**Tip:** 현재 우리 프로젝트는 하단 탭 구조(`(tabs)`)와 모달(`modal.tsx`)이 기본 세팅되어 있습니다!
+
+
+보충 설명:
+/Users/terecal/rn-project2/hyun-messenger/app/test1.tsx
