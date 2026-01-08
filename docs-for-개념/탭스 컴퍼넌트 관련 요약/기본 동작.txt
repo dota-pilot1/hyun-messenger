@@ -1,0 +1,78 @@
+# Tabs 컴포넌트 기본 동작
+
+## 1. 개요
+
+Expo Router의 `<Tabs>`는 React Navigation의 `createBottomTabNavigator` 기반으로,
+**하단 탭바 + 화면 전환**을 자동으로 처리한다.
+
+---
+
+## 2. 파일 구조와 연결
+
+```
+(tabs)/
+├── _layout.tsx    ← Tabs 컴포넌트 정의 (탭바 설정)
+├── index.tsx      ← name="index"와 연결
+└── explore.tsx    ← name="explore"와 연결
+```
+
+---
+
+## 3. 탭 등록 방식
+
+```tsx
+<Tabs>
+  <Tabs.Screen name="index" />    // → (tabs)/index.tsx 렌더링
+  <Tabs.Screen name="explore" />  // → (tabs)/explore.tsx 렌더링
+</Tabs>
+```
+
+- `name` 값 = 파일명 (확장자 제외)
+- 탭 클릭 시 해당 파일의 컴포넌트로 자동 전환
+
+---
+
+## 4. 기본 동작
+
+| 동작 | 설명 |
+|------|------|
+| 탭바 위치 | 기본값: 하단 (bottom) |
+| 화면 전환 | name에 해당하는 파일 자동 렌더링 |
+| 첫 화면 | index.tsx (name="index") |
+
+---
+
+## 5. 주요 옵션
+
+```tsx
+<Tabs
+  screenOptions={{
+    tabBarActiveTintColor: '#007AFF',  // 활성 탭 색상
+    headerShown: false,                 // 헤더 숨김
+    tabBarPosition: 'bottom',           // 탭바 위치 (기본값)
+  }}
+>
+```
+
+---
+
+## 6. 탭별 옵션
+
+```tsx
+<Tabs.Screen
+  name="index"
+  options={{
+    title: 'Home',                      // 탭 제목
+    tabBarIcon: ({ color }) => <Icon />, // 탭 아이콘
+  }}
+/>
+```
+
+---
+
+## 7. 핵심 요약
+
+1. `<Tabs>`가 하단 탭바를 생성
+2. `<Tabs.Screen name="파일명">`으로 탭 등록
+3. 탭 클릭 → 해당 파일 컴포넌트 렌더링
+4. 파일 기반 라우팅으로 자동 연결

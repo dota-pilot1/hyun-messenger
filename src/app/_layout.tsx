@@ -1,15 +1,19 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
-import * as SecureStore from 'expo-secure-store';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Stack } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import "react-native-reanimated";
 
-import { useUserStore } from '@/entities/user/model/userStore';
-import { authApi } from '@/features/auth/api/authApi';
-import { useColorScheme } from '@/shared/lib/hooks/use-color-scheme';
+import { useUserStore } from "@/entities/user/model/userStore";
+import { authApi } from "@/features/auth/api/authApi";
+import { useColorScheme } from "@/shared/lib/hooks/use-color-scheme";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -17,7 +21,7 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  anchor: "(tabs)",
 };
 
 export default function RootLayout() {
@@ -26,20 +30,20 @@ export default function RootLayout() {
 
   useEffect(() => {
     const initializeUser = async () => {
-      console.log('[RootLayout] Initializing user...');
+      console.log("[RootLayout] Initializing user...");
       try {
-        const token = await SecureStore.getItemAsync('accessToken');
-        console.log('[RootLayout] Token found:', !!token);
+        const token = await SecureStore.getItemAsync("accessToken");
+        console.log("[RootLayout] Token found:", !!token);
         if (token) {
           const userData = await authApi.getMe();
-          console.log('[RootLayout] User data fetched:', userData.email);
+          console.log("[RootLayout] User data fetched:", userData.email);
           setMe(userData);
         }
       } catch (error) {
-        console.error('[RootLayout] Failed to initialize user:', error);
+        console.error("[RootLayout] Failed to initialize user:", error);
         clearMe();
       } finally {
-        console.log('[RootLayout] Initialization complete.');
+        console.log("[RootLayout] Initialization complete.");
         useUserStore.getState().setInitialized(true);
         SplashScreen.hideAsync();
       }
@@ -49,11 +53,14 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal", title: "Modal" }}
+          />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
