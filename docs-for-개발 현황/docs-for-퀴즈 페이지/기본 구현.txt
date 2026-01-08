@@ -1,0 +1,23 @@
+# 퀴즈 탭 기본 구현
+
+## 변경 사항
+- Explore 탭을 퀴즈 탭으로 변경
+
+## 수정 파일
+1. src/app/(tabs)/_layout.tsx
+   - name: "explore" → "quiz"
+   - title: "Explore" → "퀴즈"
+   - icon: "paperplane.fill" → "questionmark.circle.fill"
+
+2. src/app/(tabs)/quiz.tsx (explore.tsx에서 이름 변경)
+   - 기존 Explore 예제 코드 제거
+   - 퀴즈 placeholder 화면으로 교체
+
+## 현재 상태
+- 탭 UI 완료 (아이콘, 이름)
+- 본문 기능은 미구현 (placeholder만 표시)
+
+## 다음 구현 예정
+- 퀴즈 목록 표시
+- 퀴즈 풀기 기능
+- 결과 확인

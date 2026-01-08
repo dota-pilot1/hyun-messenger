@@ -1,0 +1,61 @@
+# Expo Router _layout.tsx 파일 설명
+
+## _layout.tsx란?
+- Expo Router의 공식 파일명 규칙
+- 해당 폴더와 하위 라우트들의 공통 레이아웃 정의
+- Next.js의 layout.tsx와 유사한 개념
+
+## 파일명 규칙 (공식)
+- _layout.tsx: 레이아웃 파일 (필수 언더스코어)
+- index.tsx: 기본 화면 (폴더의 / 경로)
+- [id].tsx: 동적 라우트 (대괄호 사용)
+- (group): 라우트 그룹 (괄호 사용, URL에 포함 안됨)
+
+## 폴더 구조 예시
+```
+app/
+├── _layout.tsx          # 루트 레이아웃
+├── index.tsx            # / 경로
+├── (tabs)/              # 탭 그룹 (URL에 안나옴)
+│   ├── _layout.tsx      # 탭 네비게이션 설정
+│   ├── index.tsx        # /tabs가 아닌 / 경로
+│   └── quiz.tsx         # /quiz 경로
+└── (auth)/              # 인증 그룹
+    ├── _layout.tsx      # 인증 레이아웃
+    └── login.tsx        # /login 경로
+```
+
+## (tabs)/_layout.tsx 역할
+- Tabs 컴포넌트로 하단 탭 네비게이션 구성
+- 각 탭의 이름, 아이콘, 화면 연결 정의
+- 탭바 스타일 설정
+
+## 코드 예시
+```tsx
+import { Tabs } from 'expo-router';
+
+export default function TabLayout() {
+  return (
+    <Tabs>
+      <Tabs.Screen
+        name="index"        // index.tsx 파일 연결
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => <Icon name="house" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="quiz"         // quiz.tsx 파일 연결
+        options={{
+          title: '퀴즈',
+          tabBarIcon: ({ color }) => <Icon name="question" color={color} />,
+        }}
+      />
+    </Tabs>
+  );
+}
+```
+
+## 참고
+- Expo Router 공식 문서: https://docs.expo.dev/router/layouts/
+- 언더스코어(_)로 시작하는 파일은 라우트로 노출되지 않음
