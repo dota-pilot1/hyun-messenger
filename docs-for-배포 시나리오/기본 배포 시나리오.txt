@@ -1,0 +1,130 @@
+# 기본 배포 시나리오
+
+## 1. 현재 구성
+
+```
+┌─────────────────┐         ┌─────────────────┐
+│  React Native   │  ──→    │   AWS 백엔드     │
+│  (Expo 앱)      │  API    │   (이미 배포됨)  │
+└─────────────────┘         └─────────────────┘
+```
+
+---
+
+## 2. 배포 대상
+
+| 구분 | 상태 | 배포 방법 |
+|------|------|-----------|
+| 백엔드 (AWS) | 배포 완료 | - |
+| 프론트엔드 (RN 앱) | 개발 중 | Expo / 스토어 배포 |
+
+---
+
+## 3. 앱 배포 옵션
+
+### 옵션 A: Expo Go (테스트용)
+- 빠른 테스트 가능
+- 실제 배포 불가
+- `expo start` → QR 코드 스캔
+
+### 옵션 B: EAS Build (권장)
+- Expo Application Services 사용
+- iOS/Android 빌드 클라우드에서 처리
+- 스토어 배포 가능
+
+### 옵션 C: 로컬 빌드
+- Xcode (iOS) / Android Studio (Android) 필요
+- 직접 빌드 후 스토어 제출
+
+---
+
+## 4. 배포 단계 (EAS Build 기준)
+
+### Step 1: 환경 변수 설정
+```
+# .env.production
+EXPO_PUBLIC_API_URL=https://your-aws-api-url.com
+```
+
+### Step 2: EAS CLI 설치
+```bash
+npm install -g eas-cli
+eas login
+```
+
+### Step 3: EAS 설정
+```bash
+eas build:configure
+```
+
+### Step 4: 빌드 실행
+```bash
+# 개발 테스트용
+eas build --profile development --platform all
+
+# 스토어 배포용
+eas build --profile production --platform all
+```
+
+### Step 5: 스토어 제출
+```bash
+# iOS App Store
+eas submit --platform ios
+
+# Google Play Store
+eas submit --platform android
+```
+
+---
+
+## 5. 배포 환경 분리
+
+| 환경 | API URL | 용도 |
+|------|---------|------|
+| 개발 (dev) | http://localhost:8080 | 로컬 테스트 |
+| 스테이징 (staging) | https://staging-api.xxx.com | QA 테스트 |
+| 프로덕션 (prod) | https://api.xxx.com | 실제 서비스 |
+
+---
+
+## 6. 배포 체크리스트
+
+### 빌드 전
+- [ ] API URL 프로덕션으로 변경
+- [ ] 앱 버전 업데이트 (app.json)
+- [ ] 아이콘/스플래시 이미지 확인
+- [ ] 불필요한 console.log 제거
+
+### 스토어 제출 전
+- [ ] 앱 스크린샷 준비
+- [ ] 앱 설명 작성
+- [ ] 개인정보 처리방침 URL
+- [ ] Apple Developer / Google Play 계정 준비
+
+---
+
+## 7. 간단 배포 흐름
+
+```
+개발 완료
+    │
+    ▼
+환경 변수 설정 (.env.production)
+    │
+    ▼
+EAS Build 실행
+    │
+    ├─→ iOS 빌드 (.ipa)
+    │
+    └─→ Android 빌드 (.apk/.aab)
+    │
+    ▼
+스토어 제출
+    │
+    ├─→ App Store (iOS) - 심사 1~3일
+    │
+    └─→ Play Store (Android) - 심사 몇시간~1일
+    │
+    ▼
+배포 완료
+```

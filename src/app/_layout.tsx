@@ -4,12 +4,14 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+
+import { AxiosError } from "axios";
 
 import { useUserStore } from "@/entities/user/model/userStore";
 import { authApi } from "@/features/auth/api/authApi";
@@ -40,8 +42,16 @@ export default function RootLayout() {
           setMe(userData);
         }
       } catch (error) {
-        console.error("[RootLayout] Failed to initialize user:", error);
+        const axiosError = error as AxiosError;
+        if (axiosError.response?.status === 401) {
+          console.log("[RootLayout] Token expired, redirecting to login...");
+          await SecureStore.deleteItemAsync("accessToken");
+          await SecureStore.deleteItemAsync("refreshToken");
+        } else {
+          console.error("[RootLayout] Failed to initialize user:", error);
+        }
         clearMe();
+        router.replace("/(auth)/login");
       } finally {
         console.log("[RootLayout] Initialization complete.");
         useUserStore.getState().setInitialized(true);
